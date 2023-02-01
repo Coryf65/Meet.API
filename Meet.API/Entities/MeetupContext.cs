@@ -20,7 +20,7 @@ public class MeetupContext : DbContext
 		modelBuilder.Entity<Meetup>()
 			.HasOne(m => m.Location)
 			.WithOne(l => l.Meetup)
-			.HasForeignKey<Location>(l => l.Meetup);
+			.HasForeignKey<Location>(l => l.MeetupId);
 
 		// setting up relationships, many lectures in one meetup
 		modelBuilder.Entity<Meetup>()
