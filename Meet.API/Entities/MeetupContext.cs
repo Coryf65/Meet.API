@@ -4,7 +4,8 @@ namespace Meet.API.Entities;
 
 public class MeetupContext : DbContext
 {
-	private readonly string _connectionString = "Server(localdb)\\mssqllocaldb;Database=Meetup;Trusted_Connection=True";
+	//private readonly string _connectionString = "Server(localdb)\\mssqllocaldb;Database=MeetupDb;Trusted_Connection=True";
+	private readonly string _connectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;Initial Catalog=Meetup;Integrated Security=SSPI;";
 
 	public DbSet<Meetup> Meetups { get; set; }
 	public DbSet<Location> Locations { get; set; }
