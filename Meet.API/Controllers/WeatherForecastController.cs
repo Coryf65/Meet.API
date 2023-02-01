@@ -29,5 +29,23 @@ namespace Meet.API.Controllers
 			})
 			.ToArray();
 		}
+
+		[HttpGet("current/{min}")]
+		public IEnumerable<WeatherForecast> GetTest([FromRoute] int min, [FromQuery] int max)
+		{
+			return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+			{
+				Date = DateTime.Now.AddDays(index),
+				TemperatureC = Random.Shared.Next(min, max),
+				Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+			})
+			.ToArray();
+		}
+
+		[HttpPost]
+		public string Post([FromBody] string text)
+		{
+			return text.ToString();
+		}
 	}
 }
