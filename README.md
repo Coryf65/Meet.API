@@ -12,7 +12,7 @@ A Web based API for conducting Meetups
 
 ### Entity Framework
 
-- Commands for DB Migrations
+Commands for DB Migrations
 
 The Microsoft [Docs](https://learn.microsoft.com/en-us/ef/core/managing-schemas/migrations/?tabs=dotnet-core-cli)
 
