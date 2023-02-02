@@ -41,6 +41,7 @@ public class MeetupController : Controller
 	{
 		var meetup = _context.Meetups
 			.Include(m => m.Location)
+			.Include(m => m.Lectures)
 			// replacing spaces with dashes
 			.FirstOrDefault(m => m.Name.Replace(" ", "-").ToLower() == name.ToLower());
 

@@ -12,4 +12,5 @@ public class MeetupDetailsDTO
 	public string City { get; set; }
 	public string Street { get; set; }
 	public string PostCode { get; set; }
+	public List<LectureDTO> Lectures { get; set; }
 }
