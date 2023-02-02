@@ -50,4 +50,17 @@ public class MeetupController : Controller
 		// name found
 		return Ok(meetupDto);
 	}
+
+	[HttpPost]
+	public ActionResult Post([FromBody] MeetupDTO model)
+	{
+		var meetup = _mapper.Map<Meetup>(model);
+
+		_context.Meetups.Add(meetup);
+		_context.SaveChanges();
+
+		var key = meetup.Name.Replace(" ", "-").ToLower();
+
+		return Created($"api/meetup/{key}", null);
+	}
 }

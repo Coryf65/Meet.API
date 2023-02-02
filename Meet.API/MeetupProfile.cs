@@ -15,5 +15,8 @@ public class MeetupProfile : Profile
 			.ForMember(m => m.City, map => map.MapFrom(meetup => meetup.Location.City))
 			.ForMember(m => m.PostCode, map => map.MapFrom(meetup => meetup.Location.PostCode))
 			.ForMember(m => m.Street, map => map.MapFrom(meetup => meetup.Location.Street));
+
+		// the types overlap so we don't need custom mappings
+		CreateMap<MeetupDTO, Meetup>();
 	}
 }
