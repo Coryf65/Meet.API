@@ -19,6 +19,10 @@ public class MeetupController : Controller
 		_mapper = mapper;
 	}
 
+	/// <summary>
+	/// Get all Meetups
+	/// </summary>
+	/// <returns></returns>
 	[HttpGet]
 	public ActionResult<List<MeetupDetailsDTO>> Get()
 	{
@@ -26,5 +30,24 @@ public class MeetupController : Controller
 		List<MeetupDetailsDTO> meetupsDtos = _mapper.Map<List<MeetupDetailsDTO>>(meetups);
 
 		return Ok(meetupsDtos);
+	}
+
+	[HttpGet("{name}")]
+	public ActionResult<MeetupDetailsDTO> Get(string name)
+	{
+		var meetup = _context.Meetups
+			.Include(m => m.Location)
+			// replacing spaces with dashes
+			.FirstOrDefault(m => m.Name.Replace(" ", "-").ToLower() == name.ToLower());
+
+		// the name is not found
+		if (meetup is null)
+			return NotFound($"A Meetup with the name: '{name}' is not found.");
+
+		// DTO conversion
+		var meetupDto = _mapper.Map<MeetupDetailsDTO>(meetup);
+
+		// name found
+		return Ok(meetupDto);
 	}
 }
