@@ -8,5 +8,5 @@ public class Meetup
 	public DateTime Date { get; set; }
 	public bool IsPrivate { get; set; }
 	public virtual Location Location { get; set; }
-	public virtual List<Lecture> Lecture { get; set; }
+	public virtual List<Lecture> Lectures { get; set; }
 }

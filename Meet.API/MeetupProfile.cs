@@ -18,5 +18,7 @@ public class MeetupProfile : Profile
 
 		// the types overlap so we don't need custom mappings
 		CreateMap<MeetupDTO, Meetup>();
+
+		CreateMap<LectureDTO, Lecture>();	
 	}
 }

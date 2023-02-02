@@ -30,7 +30,7 @@ public class MeetupContext : DbContext
 
         // setting up relationships, many lectures in one meetup
         modelBuilder.Entity<Meetup>()
-            .HasMany(m => m.Lecture)
+            .HasMany(m => m.Lectures)
             .WithOne(l => l.Meetup);
     }
 }

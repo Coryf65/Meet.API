@@ -31,6 +31,11 @@ public class MeetupController : Controller
 		return Ok(meetupsDtos);
 	}
 
+	/// <summary>
+	/// Get a Meetup by the Name
+	/// </summary>
+	/// <param name="name">name of the meetup</param>
+	/// <returns></returns>
 	[HttpGet("{name}")]
 	public ActionResult<MeetupDetailsDTO> Get(string name)
 	{
@@ -50,6 +55,11 @@ public class MeetupController : Controller
 		return Ok(meetupDto);
 	}
 
+	/// <summary>
+	/// Save a new Meetup
+	/// </summary>
+	/// <param name="model">Json data for the meetup</param>
+	/// <returns></returns>
 	[HttpPost]
 	public ActionResult Post([FromBody] MeetupDTO model)
 	{
