@@ -3,7 +3,6 @@ using Meet.API.Entities;
 using Meet.API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace Meet.API.Data;
 
@@ -54,6 +53,10 @@ public class MeetupController : Controller
 	[HttpPost]
 	public ActionResult Post([FromBody] MeetupDTO model)
 	{
+		// checking for a valid request
+		if (!ModelState.IsValid)
+			return BadRequest(ModelState);
+
 		var meetup = _mapper.Map<Meetup>(model);
 
 		_context.Meetups.Add(meetup);
