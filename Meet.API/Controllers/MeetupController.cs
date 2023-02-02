@@ -85,13 +85,35 @@ public class MeetupController : Controller
 
 		// the name is not found
 		if (meetup is null)
-			return NotFound($"A Meetup with the name: '{name}' is not found.");			
+			return NotFound($"A Meetup with the name: '{name}' is not found.");
 
 		meetup.Name = model.Name;
 		meetup.Organizer = model.Organizer;
 		meetup.Date = model.Date;
 		meetup.IsPrivate = model.IsPrivate;
 
+		_context.SaveChanges();
+
+		return NoContent();
+	}
+
+	/// <summary>
+	/// Delete a Meetup
+	/// </summary>
+	/// <param name="name">Name of the meetup</param>
+	/// <returns>NotFound / NoContent</returns>
+	[HttpDelete("{name}")]
+	public ActionResult Delete(string name)
+	{
+		var meetup = _context.Meetups
+			// replacing spaces with dashes
+			.FirstOrDefault(m => m.Name.Replace(" ", "-").ToLower() == name.ToLower());
+
+		// the name is not found
+		if (meetup is null)
+			return NotFound($"A Meetup with the name: '{name}' is not found.");
+
+		_context.Remove(meetup);
 		_context.SaveChanges();
 
 		return NoContent();
