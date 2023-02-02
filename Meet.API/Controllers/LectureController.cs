@@ -12,11 +12,13 @@ public class LectureController : Controller
 {
 	private readonly MeetupContext _context;
 	private readonly IMapper _mapper;
+	private readonly ILogger<LectureController> _logger;
 
-	public LectureController(MeetupContext context, IMapper mapper)
+	public LectureController(MeetupContext context, IMapper mapper, ILogger<LectureController> logger)
 	{
 		_context = context;
 		_mapper = mapper;
+		_logger = logger;
 	}
 
 	/// <summary>
@@ -82,6 +84,8 @@ public class LectureController : Controller
 
 		if (meetup is null)
 			return NotFound($"A Meetup with the name: '{meetup}' is not found.");
+
+		_logger.LogWarning("All lectures for meetup '{meetupName}' have been deleted.", meetupName);
 
 		_context.Lectures.RemoveRange(meetup.Lectures);
 		_context.SaveChanges();
