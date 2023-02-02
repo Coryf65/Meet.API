@@ -7,7 +7,7 @@ A Web based API for conducting Meetups
 - C#
 - .NET 6
 - EntityFramework
-- 
+- NLog
 
 
 ### Entity Framework
