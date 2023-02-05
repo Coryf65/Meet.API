@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using Meet.API.Authorization;
 using Meet.API.Entities;
 using Meet.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
+using System.Security.Claims;
 
 namespace Meet.API.Data;
 
@@ -13,11 +16,13 @@ public class MeetupController : Controller
 {
 	private readonly MeetupContext _context;
 	private readonly IMapper _mapper;
+	private readonly IAuthorizationService _authorizationService;
 
-	public MeetupController(MeetupContext context, IMapper mapper)
+	public MeetupController(MeetupContext context, IMapper mapper, IAuthorizationService authorizationService)
 	{
 		_context = context;
 		_mapper = mapper;
+		_authorizationService = authorizationService;
 	}
 
 	/// <summary>
@@ -39,7 +44,8 @@ public class MeetupController : Controller
 	/// </summary>
 	/// <param name="name">name of the meetup</param>
 	/// <returns></returns>
-	[HttpGet("{name}")]	
+	[HttpGet("{name}")]
+	[Authorize(Policy = "18AndOlder")] // custom Policy to allow only if conditions are met
 	public ActionResult<MeetupDetailsDTO> Get(string name)
 	{
 		var meetup = _context.Meetups
@@ -74,6 +80,10 @@ public class MeetupController : Controller
 
 		var meetup = _mapper.Map<Meetup>(model);
 
+		var userId = User.FindFirst(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
+
+		meetup.CreatedById = int.Parse(userId);
+
 		_context.Meetups.Add(meetup);
 		_context.SaveChanges();
 
@@ -89,7 +99,6 @@ public class MeetupController : Controller
 	/// <param name="model"></param>
 	/// <returns></returns>
 	[HttpPut("{name}")]
-	[Authorize(Roles = "Admin,Moderator")]
 	public ActionResult Put(string name, [FromBody] MeetupDTO model)
 	{
 		if (!ModelState.IsValid)
@@ -102,6 +111,15 @@ public class MeetupController : Controller
 		// the name is not found
 		if (meetup is null)
 			return NotFound($"A Meetup with the name: '{name}' is not found.");
+
+		var authorizationResult = _authorizationService.AuthorizeAsync(
+			user: User,
+			resource: meetup,
+			requirement: new ResourceOperationRequirement(OperationType.Update)
+		).Result;
+
+		if (!authorizationResult.Succeeded)
+			return Forbid("User Not Authorized to Access.");
 
 		meetup.Name = model.Name;
 		meetup.Organizer = model.Organizer;
@@ -119,7 +137,6 @@ public class MeetupController : Controller
 	/// <param name="name">Name of the meetup</param>
 	/// <returns>NotFound / NoContent</returns>
 	[HttpDelete("{name}")]
-	[Authorize(Roles = "Admin,Moderator")]
 	public ActionResult Delete(string name)
 	{
 		var meetup = _context.Meetups
@@ -129,6 +146,15 @@ public class MeetupController : Controller
 		// the name is not found
 		if (meetup is null)
 			return NotFound($"A Meetup with the name: '{name}' is not found.");
+
+		var authorizationResult = _authorizationService.AuthorizeAsync(
+			user: User,
+			resource: meetup,
+			requirement: new ResourceOperationRequirement(OperationType.Delete)
+		).Result;
+
+		if (!authorizationResult.Succeeded)
+			return Forbid("User Not Authorized to Access.");
 
 		_context.Remove(meetup);
 		_context.SaveChanges();

@@ -5,8 +5,6 @@ namespace Meet.API.Data;
 
 public class MeetupContext : DbContext
 {
-    private readonly DbContextOptions<MeetupContext> _context;
-
     public DbSet<Meetup> Meetups { get; set; }
     public DbSet<Location> Locations { get; set; }
     public DbSet<Lecture> Lectures { get; set; }
@@ -15,7 +13,7 @@ public class MeetupContext : DbContext
 
     public MeetupContext(DbContextOptions<MeetupContext> options) : base(options)
     {
-        _context = options;
+
 	}
 
     /// <summary>
@@ -24,8 +22,14 @@ public class MeetupContext : DbContext
     /// <param name="modelBuilder"></param>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // setting up relationships, one location one meetup
         modelBuilder.Entity<Meetup>()
+            .HasOne(c => c.CreatedBy);
+
+		modelBuilder.Entity<User>()
+			.HasOne(u => u.Role);
+
+		// setting up relationships, one location one meetup
+		modelBuilder.Entity<Meetup>()
             .HasOne(m => m.Location)
             .WithOne(l => l.Meetup)
             .HasForeignKey<Location>(l => l.MeetupId);
@@ -33,9 +37,6 @@ public class MeetupContext : DbContext
         // setting up relationships, many lectures in one meetup
         modelBuilder.Entity<Meetup>()
             .HasMany(m => m.Lectures)
-            .WithOne(l => l.Meetup);
-
-        modelBuilder.Entity<User>()
-            .HasOne(u => u.Role);
+            .WithOne(l => l.Meetup);        
     }
 }
