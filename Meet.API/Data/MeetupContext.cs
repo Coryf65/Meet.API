@@ -10,6 +10,8 @@ public class MeetupContext : DbContext
     public DbSet<Meetup> Meetups { get; set; }
     public DbSet<Location> Locations { get; set; }
     public DbSet<Lecture> Lectures { get; set; }
+    public DbSet<Role> Roles { get; set; }
+    public DbSet<User> Users { get; set; }
 
     public MeetupContext(DbContextOptions<MeetupContext> options) : base(options)
     {
@@ -32,5 +34,8 @@ public class MeetupContext : DbContext
         modelBuilder.Entity<Meetup>()
             .HasMany(m => m.Lectures)
             .WithOne(l => l.Meetup);
+
+        modelBuilder.Entity<User>()
+            .HasOne(u => u.Role);
     }
 }
