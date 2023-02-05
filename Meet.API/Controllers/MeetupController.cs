@@ -65,6 +65,7 @@ public class MeetupController : Controller
 	/// <param name="model">Json data for the meetup</param>
 	/// <returns></returns>
 	[HttpPost]
+	[Authorize(Roles = "Admin,Moderator")]
 	public ActionResult Post([FromBody] MeetupDTO model)
 	{
 		// checking for a valid request
@@ -88,6 +89,7 @@ public class MeetupController : Controller
 	/// <param name="model"></param>
 	/// <returns></returns>
 	[HttpPut("{name}")]
+	[Authorize(Roles = "Admin,Moderator")]
 	public ActionResult Put(string name, [FromBody] MeetupDTO model)
 	{
 		if (!ModelState.IsValid)
@@ -117,6 +119,7 @@ public class MeetupController : Controller
 	/// <param name="name">Name of the meetup</param>
 	/// <returns>NotFound / NoContent</returns>
 	[HttpDelete("{name}")]
+	[Authorize(Roles = "Admin,Moderator")]
 	public ActionResult Delete(string name)
 	{
 		var meetup = _context.Meetups
