@@ -17,6 +17,7 @@ A Web based API for conducting Meetups
 ![Screenshot 2023-02-05 at 16-53-12 Swagger UI](https://user-images.githubusercontent.com/20805058/216850654-a5bd38d5-0fae-493b-b3e1-1aff1edea460.png)
 
 ### Entity Framework
+<details><summary>More Info ...</summary> 
 
 Commands for DB Migrations
 
@@ -84,3 +85,4 @@ PM> script-migration
 ```bash
 > dotnet ef migrations script
 ```
+</details>
