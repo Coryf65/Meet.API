@@ -20,7 +20,7 @@ This is not intended for production (end users), it is meant as demo or example 
 [docs](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-6.0&tabs=windows) `"JwtKey": "SET_THIS_TO_SOMETHING_DONT_SHARE"` 
 > :warning: If you get an error like **'IDX10653: The encryption algorithm 'http://www.w3.org/2001/04/xmldsig-more#hmac-sha256' 
 requires a key size of at least '128' bits. Key '[PII of type 'Microsoft.IdentityModel.Tokens.SymmetricSecurityKey' is hidden. 
-For more details, see https://aka.ms/IdentityModel/PII.]', is of size: '8'. (Parameter 'key')''** your JWT Key may need to me longer in length :warning:
+For more details, see https://aka.ms/IdentityModel/PII.]', is of size: '8'. (Parameter 'key')''** your JWT Key may need to be longer in length :warning:
 2. you would need to run in Visual Studio Package Manager : `add-migration MigrationName` or Run `dotnet ef migrations add MigrationName`
 3. You should now be able to build and run :thumbsup:
 
