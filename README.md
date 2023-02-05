@@ -14,7 +14,7 @@ A Web based API for conducting Meetups
 2. you would need to run in Visual Studio Package Manager : ```BASH add-migration MigrationName ``` or Run ```CLI dotnet ef migrations add MigrationName ```
 3. You should now be able to build and run
 
-
+![Screenshot 2023-02-05 at 16-53-12 Swagger UI](https://user-images.githubusercontent.com/20805058/216850654-a5bd38d5-0fae-493b-b3e1-1aff1edea460.png)
 
 ### Entity Framework
 
