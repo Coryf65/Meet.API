@@ -3,12 +3,15 @@ using FluentValidation.AspNetCore;
 using Meet.API;
 using Meet.API.Data;
 using Meet.API.Entities;
+using Meet.API.Identity;
 using Meet.API.Models;
 using Meet.API.Validators;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using NLog;
 using NLog.Web;
+using System.Text;
 
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 logger.Debug("init main");
@@ -16,9 +19,28 @@ logger.Debug("init main");
 try
 {
 	var builder = WebApplication.CreateBuilder(args);
+	JwtOptions jwtOptions = new();
 
 	// Add services to the container.
 	builder.Services.AddControllers();
+	// Add JWTOptions
+	builder.Services.AddSingleton(jwtOptions);
+
+	builder.Services.AddAuthentication(options =>
+	{
+		options.DefaultAuthenticateScheme = "Bearer";
+		options.DefaultScheme = "Bearer";
+		options.DefaultChallengeScheme = "Bearer";
+	}).AddJwtBearer(cfg =>
+	{
+	cfg.RequireHttpsMetadata = false;
+		cfg.TokenValidationParameters = new TokenValidationParameters
+		{
+			ValidIssuer = jwtOptions.JwtIssuer,
+			ValidAudience = jwtOptions.JwtIssuer,
+			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.JwtKey)) 
+		};
+	});
 
 	// Fluent Validation
 	builder.Services.AddFluentValidationAutoValidation();
@@ -54,10 +76,9 @@ try
 		});
 	}
 
+	app.UseAuthentication();
 	app.UseHttpsRedirection();
-
 	app.UseAuthorization();
-
 	app.MapControllers();
 
 	app.Run();
