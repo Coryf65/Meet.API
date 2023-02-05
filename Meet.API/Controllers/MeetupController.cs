@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using Meet.API.Entities;
 using Meet.API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Meet.API.Data;
 
 [Route("api/meetup")]
+[Authorize] // all actions require a valid login / jwt
 public class MeetupController : Controller
 {
 	private readonly MeetupContext _context;
@@ -23,6 +25,7 @@ public class MeetupController : Controller
 	/// </summary>
 	/// <returns></returns>
 	[HttpGet]
+	[AllowAnonymous] // allows not logged in requests
 	public ActionResult<List<MeetupDetailsDTO>> Get()
 	{
 		List<Meetup> meetups = _context.Meetups.Include(m => m.Location).ToList();
@@ -36,7 +39,7 @@ public class MeetupController : Controller
 	/// </summary>
 	/// <param name="name">name of the meetup</param>
 	/// <returns></returns>
-	[HttpGet("{name}")]
+	[HttpGet("{name}")]	
 	public ActionResult<MeetupDetailsDTO> Get(string name)
 	{
 		var meetup = _context.Meetups
