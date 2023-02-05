@@ -1,11 +1,13 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Meet.API;
+using Meet.API.Authorization;
 using Meet.API.Data;
 using Meet.API.Entities;
 using Meet.API.Identity;
 using Meet.API.Models;
 using Meet.API.Validators;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -51,6 +53,14 @@ try
 
 	// adding Jwt Provider
 	builder.Services.AddScoped<IJwtProvider, JwtProvider>();
+	// custom policy example
+	builder.Services.AddAuthorization(options =>
+	{
+		options.AddPolicy("18AndOlder", builder => builder.AddRequirements(new MinimumAgeRequirement(18)));
+	});
+	// register the New 18 age handler
+	builder.Services.AddScoped<IAuthorizationHandler, MinimumAgeHandler>();
+	builder.Services.AddScoped<IAuthorizationHandler, MeetupResourceOperationHandler>();
 	// Fluent Validation
 	builder.Services.AddFluentValidationAutoValidation();
 	builder.Services.AddScoped<IValidator<RegisterUserDTO>, RegisterUserValidator>();
