@@ -7,6 +7,7 @@
     <Title>Meetup API</Title>
     <Authors>Cory</Authors>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <UserSecretsId>13966620-3c19-4019-a38c-152d61fc340d</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

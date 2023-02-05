@@ -8,7 +8,6 @@ using Meet.API.Models;
 using Meet.API.Validators;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using NLog;
 using NLog.Web;
@@ -20,9 +19,14 @@ logger.Debug("init main");
 try
 {
 	var builder = WebApplication.CreateBuilder(args);
-	
+
+	// Note: this section probably could be better
 	JwtOptions jwtOptions = new();
 	builder.Configuration.GetSection("jwt").Bind(jwtOptions);
+
+	// Check if we have a secret set if so we bind it
+	if (builder.Configuration["JwtKey"] != string.Empty)
+		jwtOptions.JwtKey = builder.Configuration["JwtKey"];
 
 	// Add services to the container.
 	builder.Services.AddControllers();
