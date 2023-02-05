@@ -2,12 +2,18 @@
  
 A Web based API for conducting Meetups
 
+:information_source::triangular_flag_on_post: Built for Software Developers, as a demo and practice for me. :triangular_flag_on_post::information_source:
+
 ## Tools
 
 - C#
 - .NET 6
 - EntityFramework
 - NLog
+
+## Running From Visual Studio / VS Code
+
+This is not intended for production (end users), it is meant as demo or example of creating a RESTful Web API in C# and .NET.
 
 > in order to run this project do the following ...
 1. Set the JWT Key [Info on JWT](https://jwt.io/introduction) to something either in appsettings.json OR UserSecrets [docs](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-6.0&tabs=windows) ``` JSON "JwtKey": "SET_THIS_TO_SOMETHING_DONT_SHARE" ``` 
