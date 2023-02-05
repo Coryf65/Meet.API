@@ -27,6 +27,9 @@ public class AccountController : ControllerBase
 		if (!ModelState.IsValid)
 			return BadRequest(ModelState);
 
+		// checking the user mode for data validation
+
+
 		User newUser = new()
 		{
 			Email = registerUserDTO.Email,

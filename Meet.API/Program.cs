@@ -1,12 +1,16 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Meet.API;
 using Meet.API.Data;
 using Meet.API.Entities;
+using Meet.API.Models;
+using Meet.API.Validators;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using NLog.Web;
 
-var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 logger.Debug("init main");
 
 try
@@ -16,14 +20,18 @@ try
 	// Add services to the container.
 	builder.Services.AddControllers();
 
+	// Fluent Validation
+	builder.Services.AddFluentValidationAutoValidation();
+	builder.Services.AddScoped<IValidator<RegisterUserDTO>, RegisterUserValidator>();	
+	// Microsoft Password Hasher
 	builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
-
+	// EntityFramework
 	builder.Services.AddDbContext<MeetupContext>(options =>
 		options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 	);
+	// Auto Mapper
 	builder.Services.AddAutoMapper(typeof(MeetupProfile));
-
-	// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+	// Swagger/OpenAPI (https://aka.ms/aspnetcore/swashbuckle)
 	builder.Services.AddEndpointsApiExplorer();
 	builder.Services.AddSwaggerGen(
 		c => c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo() { Title = "Meetup API", Version = "v1" })
@@ -41,6 +49,7 @@ try
 		app.UseSwagger();
 		app.UseSwaggerUI(c =>
 		{
+			// custom path and name
 			c.SwaggerEndpoint("/swagger/v1/swagger.json", "MeetupAPI v1");
 		});
 	}
@@ -52,7 +61,6 @@ try
 	app.MapControllers();
 
 	app.Run();
-
 }
 catch (Exception exception)
 {
