@@ -42,6 +42,8 @@ try
 		};
 	});
 
+	// adding Jwt Provider
+	builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 	// Fluent Validation
 	builder.Services.AddFluentValidationAutoValidation();
 	builder.Services.AddScoped<IValidator<RegisterUserDTO>, RegisterUserValidator>();	
