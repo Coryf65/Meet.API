@@ -1,5 +1,7 @@
 using Meet.API;
 using Meet.API.Data;
+using Meet.API.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using NLog.Web;
@@ -13,6 +15,8 @@ try
 
 	// Add services to the container.
 	builder.Services.AddControllers();
+
+	builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
 	builder.Services.AddDbContext<MeetupContext>(options =>
 		options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))

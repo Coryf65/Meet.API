@@ -2,6 +2,7 @@
 using Meet.API.Entities;
 using Meet.API.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Meet.API.Controllers;
@@ -11,10 +12,12 @@ namespace Meet.API.Controllers;
 public class AccountController : ControllerBase
 {
 	private readonly MeetupContext _context;
+	private readonly IPasswordHasher<User> _passwordHaser;
 
-	public AccountController(MeetupContext meetupContext)
+	public AccountController(MeetupContext meetupContext, IPasswordHasher<User> passwordHasher)
 	{
 		_context = meetupContext;
+		_passwordHaser = passwordHasher;
 	}
 
 	[HttpPost("register")]
@@ -30,6 +33,9 @@ public class AccountController : ControllerBase
 			DateOfBirth = registerUserDTO.DateOfBirth,
 			RoleId = registerUserDTO.RoleId
 		};
+
+		string passwordHash = _passwordHaser.HashPassword(newUser, registerUserDTO.Password);
+		newUser.PasswordHash = passwordHash;
 
 		_context.Users.Add(newUser);
 		_context.SaveChanges();
