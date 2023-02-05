@@ -31,7 +31,7 @@ public class JwtProvider : IJwtProvider
 		};
 
 		var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.JwtKey));
-		var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
+		var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 		var expires = DateTime.Now.AddDays(_jwtOptions.JwtExpireDays);
 
 		var token = new JwtSecurityToken(

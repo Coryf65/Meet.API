@@ -8,6 +8,7 @@ using Meet.API.Models;
 using Meet.API.Validators;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using NLog;
 using NLog.Web;
@@ -19,7 +20,9 @@ logger.Debug("init main");
 try
 {
 	var builder = WebApplication.CreateBuilder(args);
+	
 	JwtOptions jwtOptions = new();
+	builder.Configuration.GetSection("jwt").Bind(jwtOptions);
 
 	// Add services to the container.
 	builder.Services.AddControllers();
@@ -33,12 +36,12 @@ try
 		options.DefaultChallengeScheme = "Bearer";
 	}).AddJwtBearer(cfg =>
 	{
-	cfg.RequireHttpsMetadata = false;
+		cfg.RequireHttpsMetadata = false;
 		cfg.TokenValidationParameters = new TokenValidationParameters
 		{
 			ValidIssuer = jwtOptions.JwtIssuer,
 			ValidAudience = jwtOptions.JwtIssuer,
-			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.JwtKey)) 
+			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.JwtKey))
 		};
 	});
 
@@ -46,7 +49,7 @@ try
 	builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 	// Fluent Validation
 	builder.Services.AddFluentValidationAutoValidation();
-	builder.Services.AddScoped<IValidator<RegisterUserDTO>, RegisterUserValidator>();	
+	builder.Services.AddScoped<IValidator<RegisterUserDTO>, RegisterUserValidator>();
 	// Microsoft Password Hasher
 	builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 	// EntityFramework
