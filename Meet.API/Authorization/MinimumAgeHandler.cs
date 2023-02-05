@@ -7,7 +7,7 @@ public class MinimumAgeHandler : AuthorizationHandler<MinimumAgeRequirement>
 {
 	private readonly ILogger _logger;
 
-	public MinimumAgeHandler(ILogger logger)
+	public MinimumAgeHandler(ILogger<MinimumAgeHandler> logger)
 	{
 		_logger = logger;
 	}
