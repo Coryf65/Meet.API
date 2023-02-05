@@ -9,6 +9,12 @@ A Web based API for conducting Meetups
 - EntityFramework
 - NLog
 
+> in order to run this project do the following
+1. Set the JWT Key [Info on JWT](https://jwt.io/introduction) to something either in appsettings.json OR UserSecrets [docs](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-6.0&tabs=windows) ``` JSON "JwtKey": "SET_THIS_TO_SOMETHING_DONT_SHARE" ``` 
+2. you would need to run in Visual Studio Package Manager : ```BASH add-migration MigrationName ``` or Run ```CLI dotnet ef migrations add MigrationName ```
+3. You should now be able to build and run
+
+
 
 ### Entity Framework
 
@@ -30,7 +36,7 @@ PM> add-migration MigrationName
 
 > using the CLI (any terminal / command line) and dotnet
 ```bash
-> dotnet ef migrations add MigrationName 
+> dotnet ef migrations add MigrationName
 ```
 
 2. Creating or Updating the Database
