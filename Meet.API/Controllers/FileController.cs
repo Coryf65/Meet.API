@@ -1,15 +1,16 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 
 namespace Meet.API.Controllers;
 
-[Route("api/[controller]")]
 [ApiController]
+[Route("api/[controller]")]
 [Authorize]
 public class FileController : ControllerBase
 {
+	// this will allow the client to pull from the browser cache for the duration
+	[ResponseCache(Duration = 1200, VaryByQueryKeys = new[] { "filename" })]
 	[HttpGet]
 	public ActionResult GetFile(string filename)
 	{

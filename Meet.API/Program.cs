@@ -103,6 +103,8 @@ try
 		});
 	}
 
+	// Use caching where denoted by a attribute
+	app.UseResponseCaching();
 	// allows us to serve static files from wwwroot/
 	app.UseStaticFiles();
 	app.UseAuthentication();

@@ -10,6 +10,7 @@ using System.Security.Claims;
 
 namespace Meet.API.Data;
 
+[ApiController]
 [Route("api/meetup")]
 [Authorize] // all actions require a valid login / jwt
 [ServiceFilter(typeof(TimeTrackFilter))]

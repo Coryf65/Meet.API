@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Meet.API.Controllers;
 
+[ApiController]
 [Route("api/meetup/{meetupName}/lecture")]
 public class LectureController : Controller
 {

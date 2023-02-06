@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Meet.API.Controllers;
 
-[Route("api/[controller]")]
 [ApiController]
+[Route("api/[controller]")]
 public class AccountController : ControllerBase
 {
 	private readonly MeetupContext _context;
