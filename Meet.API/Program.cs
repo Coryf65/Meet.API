@@ -85,6 +85,11 @@ try
 	builder.Logging.ClearProviders();
 	builder.Host.UseNLog();
 
+	// https://learn.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-6.0
+	builder.Services.AddCors(options => 
+		options.AddPolicy("FrontEndClient", builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:7260/")) // only allow from specific domains
+	);
+
 	var app = builder.Build();
 
 	// Configure the HTTP request pipeline.
@@ -102,6 +107,7 @@ try
 	app.UseHttpsRedirection();
 	app.UseAuthorization();
 	app.MapControllers();
+	app.UseCors("FrontEndClient");
 
 	app.Run();
 }
