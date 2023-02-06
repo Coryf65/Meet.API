@@ -52,6 +52,8 @@ try
 		};
 	});
 
+	// TimeTrackFilter
+	builder.Services.AddScoped<TimeTrackFilter>();
 	// adding Jwt Provider
 	builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 	// custom policy example

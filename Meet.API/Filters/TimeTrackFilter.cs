@@ -8,9 +8,15 @@ namespace Meet.API.Filters;
 /// what aciton is being preformed at the time for debug info.
 /// Used as a Attribute to a method or class [TimeTrackFilter]
 /// </summary>
-public class TimeTrackFilter : Attribute, IActionFilter
+public class TimeTrackFilter : IActionFilter
 {
+	private readonly ILogger<TimeTrackFilter> _logger;
 	private Stopwatch _stopwatch;
+
+	public TimeTrackFilter(ILogger<TimeTrackFilter> logger)
+	{
+		_logger = logger;
+	}
 
 	public void OnActionExecuted(ActionExecutedContext context)
 	{
@@ -19,7 +25,7 @@ public class TimeTrackFilter : Attribute, IActionFilter
 		var milliseconds = _stopwatch.ElapsedMilliseconds;
 		var action = context.ActionDescriptor.DisplayName;
 
-		Debug.WriteLine($"Action [{action}], executed in: {milliseconds} milliseconds");
+		_logger.LogInformation($"Action [{action}], executed in: {milliseconds} milliseconds");
 	}
 
 	public void OnActionExecuting(ActionExecutingContext context)
