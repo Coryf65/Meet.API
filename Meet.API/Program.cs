@@ -103,6 +103,8 @@ try
 		});
 	}
 
+	// allows us to serve static files from wwwroot/
+	app.UseStaticFiles();
 	app.UseAuthentication();
 	app.UseHttpsRedirection();
 	app.UseAuthorization();
