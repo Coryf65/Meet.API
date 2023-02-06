@@ -4,6 +4,7 @@ using Meet.API;
 using Meet.API.Authorization;
 using Meet.API.Data;
 using Meet.API.Entities;
+using Meet.API.Filters;
 using Meet.API.Identity;
 using Meet.API.Models;
 using Meet.API.Validators;
@@ -30,8 +31,8 @@ try
 	if (builder.Configuration["JwtKey"] != string.Empty)
 		jwtOptions.JwtKey = builder.Configuration["JwtKey"];
 
-	// Add services to the container.
-	builder.Services.AddControllers();
+	// Add services to the container. and apply the exception filter globally
+	builder.Services.AddControllers(options => options.Filters.Add(typeof(ExceptionFilter)));
 	// Add JWTOptions
 	builder.Services.AddSingleton(jwtOptions);
 
@@ -106,7 +107,6 @@ catch (Exception exception)
 {
 	// NLog: catch setup errors
 	logger.Error(exception, "Stopped program because of exception");
-	throw;
 }
 finally
 {
