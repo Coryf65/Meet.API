@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Meet.API.Authorization;
 using Meet.API.Entities;
+using Meet.API.Filters;
 using Meet.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,7 @@ namespace Meet.API.Data;
 
 [Route("api/meetup")]
 [Authorize] // all actions require a valid login / jwt
+[TimeTrackFilter]
 public class MeetupController : Controller
 {
 	private readonly MeetupContext _context;
