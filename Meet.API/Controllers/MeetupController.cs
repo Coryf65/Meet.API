@@ -33,15 +33,30 @@ public class MeetupController : Controller
 	/// <returns>All Meetups</returns>
 	[HttpGet]
 	[AllowAnonymous] // allows not logged in requests
-	public ActionResult<List<MeetupDetailsDTO>> GetAll([FromQuery] string? searchPhrase)
+	public ActionResult<PageResults<MeetupDetailsDTO>> GetAll([FromQuery] MeetupQuery query)
 	{
-		List<Meetup> meetups = _context.Meetups
+		// Base Query
+		List<Meetup> allMeetups = _context.Meetups
 			.Include(m => m.Location)
-			.Where(m => searchPhrase == null || (m.Organizer.ToLower().Contains(searchPhrase.ToLower()) || m.Name.Contains(searchPhrase.ToLower())))
+			.Where(m => query.SearchPhrase == null ||
+				(m.Organizer.ToLower().Contains(query.SearchPhrase.ToLower()) ||
+				m.Name.Contains(query.SearchPhrase.ToLower())))
 			.ToList();
-		List<MeetupDetailsDTO> meetupsDtos = _mapper.Map<List<MeetupDetailsDTO>>(meetups);
 
-		return Ok(meetupsDtos);
+		// Pagination
+		List<Meetup> pagedMeetups = allMeetups
+			.Skip(query.PageSize * (query.PageNumber - 1))
+			.Take(query.PageSize)
+			.ToList();
+
+		int totalCount = allMeetups.Count();
+
+		List<MeetupDetailsDTO> meetupsDtos = _mapper.Map<List<MeetupDetailsDTO>>(pagedMeetups);
+
+		// filter the results set
+		PageResults<MeetupDetailsDTO> results = new(meetupsDtos, totalCount, query.PageNumber, query.PageSize);
+		
+		return Ok(results);
 	}
 
 	/// <summary>
