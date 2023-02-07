@@ -6,6 +6,7 @@ using Meet.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using System.Security.Claims;
 
 namespace Meet.API.Data;
@@ -39,12 +40,30 @@ public class MeetupController : Controller
 			return BadRequest(ModelState);
 		
 		// Base Query
-		List<Meetup> allMeetups = _context.Meetups
+		var allMeetups = _context.Meetups
 			.Include(m => m.Location)
 			.Where(m => query.SearchPhrase == null ||
 				(m.Organizer.ToLower().Contains(query.SearchPhrase.ToLower()) ||
-				m.Name.Contains(query.SearchPhrase.ToLower())))
-			.ToList();
+				m.Name.Contains(query.SearchPhrase.ToLower())));
+
+		// Optional Sorting 
+		if (!string.IsNullOrEmpty(query.SortBy))
+		{
+			// store available columns to sort by
+			Dictionary<string, Expression<Func<Meetup, object>>> selectors = new()
+			{
+				{ nameof(Meetup.Name), meetup => meetup.Name },
+				{ nameof(Meetup.Date), meetup => meetup.Date },
+				{ nameof(Meetup.Organizer), meetup => meetup.Organizer },
+			};
+
+			// get the expression to sort by
+			var propertySelector = selectors[query.SortBy];
+
+			allMeetups = query.SortDirection == SortDirection.ASC 
+				? allMeetups.OrderBy(propertySelector) 
+				: allMeetups.OrderByDescending(propertySelector);
+		}
 
 		// Pagination
 		List<Meetup> pagedMeetups = allMeetups
