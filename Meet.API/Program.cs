@@ -93,17 +93,14 @@ try
 
 	var app = builder.Build();
 
-	// Configure the HTTP request pipeline.
-	if (app.Environment.IsDevelopment())
+	// use swagger for docs
+	app.UseSwagger();
+	app.UseSwaggerUI(c =>
 	{
-		app.UseSwagger();
-		app.UseSwaggerUI(c =>
-		{
-			// custom path and name
-			c.SwaggerEndpoint("/swagger/v1/swagger.json", "MeetupAPI v1");
-		});
-	}
-
+		// custom path and name
+		c.SwaggerEndpoint("/swagger/v1/swagger.json", "MeetupAPI v1");
+	});
+	
 	// Use caching where denoted by a attribute
 	app.UseResponseCaching();
 	// allows us to serve static files from wwwroot/
