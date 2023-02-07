@@ -28,14 +28,17 @@ public class MeetupController : Controller
 	}
 
 	/// <summary>
-	/// Get all Meetups
+	/// Get all Meetups Or Get meetups by name
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>All Meetups</returns>
 	[HttpGet]
 	[AllowAnonymous] // allows not logged in requests
-	public ActionResult<List<MeetupDetailsDTO>> Get()
+	public ActionResult<List<MeetupDetailsDTO>> GetAll([FromQuery] string? searchPhrase)
 	{
-		List<Meetup> meetups = _context.Meetups.Include(m => m.Location).ToList();
+		List<Meetup> meetups = _context.Meetups
+			.Include(m => m.Location)
+			.Where(m => searchPhrase == null || (m.Organizer.ToLower().Contains(searchPhrase.ToLower()) || m.Name.Contains(searchPhrase.ToLower())))
+			.ToList();
 		List<MeetupDetailsDTO> meetupsDtos = _mapper.Map<List<MeetupDetailsDTO>>(meetups);
 
 		return Ok(meetupsDtos);
