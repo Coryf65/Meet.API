@@ -35,6 +35,9 @@ public class MeetupController : Controller
 	[AllowAnonymous] // allows not logged in requests
 	public ActionResult<PageResults<MeetupDetailsDTO>> GetAll([FromQuery] MeetupQuery query)
 	{
+		if (!ModelState.IsValid)
+			return BadRequest(ModelState);
+		
 		// Base Query
 		List<Meetup> allMeetups = _context.Meetups
 			.Include(m => m.Location)

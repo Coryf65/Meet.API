@@ -67,6 +67,7 @@ try
 	// Fluent Validation
 	builder.Services.AddFluentValidationAutoValidation();
 	builder.Services.AddScoped<IValidator<RegisterUserDTO>, RegisterUserValidator>();
+	builder.Services.AddScoped<IValidator<MeetupQuery>, MeetupQueryValidator>();
 	// Microsoft Password Hasher
 	builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 	// EntityFramework
