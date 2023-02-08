@@ -25,6 +25,7 @@ For more details, see https://aka.ms/IdentityModel/PII.]', is of size: '8'. (Par
 3. You should now be able to build and run :thumbsup:
 
 ![Screenshot 2023-02-05 at 16-53-12 Swagger UI](https://user-images.githubusercontent.com/20805058/216850654-a5bd38d5-0fae-493b-b3e1-1aff1edea460.png)
+![postman_screencap](https://user-images.githubusercontent.com/20805058/217394643-f9c230ab-272e-4e9d-af31-08d0e46c9d2b.PNG)
 
 ### Entity Framework Migrations Commands and Info
 <details><summary>More Info ...</summary> 
