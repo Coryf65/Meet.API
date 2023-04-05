@@ -41,6 +41,14 @@ At the very first time, you defined the initial domain classes.
 At this point, there is no database for your application which can store the data from your domain classes. 
 So, firstly, you need to create a migration
 
+You may need to add the following packger if you get the error:
+
+![Screenshot from 2023-04-05 12-15-47](https://user-images.githubusercontent.com/20805058/230155149-f4ee1f5b-b4b5-4e39-9a9b-de01c00697f4.png)
+
+```bash
+PM> Install-Package Microsoft.EntityFrameworkCore.Tools
+```
+
 > using the Package Manager Console in Visual Studio
 ```bash
 PM> add-migration MigrationName
